@@ -1,0 +1,97 @@
+<div class="card bg-dark text-white">
+  <div class="card-header">{{ titulo }}</div>
+  <div class="card-body">
+    <form #autorForm="ngForm">
+      <div class="form-group row">
+        <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+        <div class="col-sm-6">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="autor.nombre"
+            name="nombre"
+            required
+            #nombre="ngModel"
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+          >
+            <div *ngIf="nombre.errors.required">
+              El nombre debe ser especificado
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="fechaNacimiento" class="col-form-label col-sm-2"
+          >Fecha Nacimiento</label
+        >
+        <div class="col-sm-6">
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="autor.fechaNacimiento"
+            name="fechaNacimiento"
+            #fechaNacimiento="ngModel"
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="
+              fechaNacimiento.invalid &&
+              (fechaNacimiento.dirty || fechaNacimiento.touched)
+            "
+          >
+            <div *ngIf="fechaNacimiento.errors.required">
+              Debe especificarse una fecha de nacimiento correcta
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="nacionalidad" class="col-form-label col-sm-2"
+          >Nacionalidad</label
+        >
+        <div class="col-sm-6">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="autor.nacionalidad"
+            name="nacionalidad"
+            #nacionalidad="ngModel"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <button
+            class="btn btn-primary"
+            role="button"
+            (click)="create()"
+            *ngIf="!autor.id; else elseBlock"
+            [disabled]="!autorForm.form.valid"
+          >
+            Crear
+          </button>
+          <button
+            class="btn btn-danger"
+            role="button"
+            [routerLink]="['/autores']"
+          >
+            Cancelar
+          </button>
+          <ng-template #elseBlock>
+            <button
+              class="btn btn-primary"
+              role="button"
+              (click)="update()"
+              [disabled]="!autorForm.form.valid"
+            >
+              Editar
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,177 @@
+<div class="card bg-dark text-white">
+  <div class="card-header">{{ titulo }}</div>
+  <div class="card-body">
+    <form #usuarioForm="ngForm">
+      <div class="form-group row">
+        <!-- USERNAME -->
+        <label for="username" class="col-form-label col-sm-2"
+          >Nombre de usuario</label
+        >
+        <div class="col-sm-6">
+          <!-- <input
+                    *ngIf="usuario.id"
+                    type="hidden"
+                    name="edificioid"
+                    [(ngModel)]="sala.edificio.id"
+                    #edificioid="ngModel"
+                /> -->
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="usuario.username"
+            name="username"
+            required
+            #username="ngModel"
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="username.invalid && (username.dirty || username.touched)"
+          >
+            <div *ngIf="username.errors.required">
+              El nombre de usuario debe ser especificado
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <!-- PASSWORD -->
+        <label for="password" class="col-form-label col-sm-2">Contraseña</label>
+        <div class="col-sm-6">
+          <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="usuario.password"
+            name="password"
+            required
+            #password="ngModel"
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="password.invalid && (password.dirty || password.touched)"
+          >
+            <div *ngIf="password.errors.required">
+              La contraseña debe ser especificada
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <!-- NOMBRE -->
+        <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+        <div class="col-sm-6">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="usuario.nombre"
+            name="nombre"
+            required
+            #nombre="ngModel"
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+          >
+            <div *ngIf="nombre.errors.required">
+              El nombre debe ser especificado
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <!-- APELLIDO -->
+        <label for="apellido" class="col-form-label col-sm-2">Apellido</label>
+        <div class="col-sm-6">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="usuario.apellido"
+            name="apellido"
+            required
+            #apellido="ngModel"
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)"
+          >
+            <div *ngIf="apellido.errors.required">
+              El apellido debe ser especificado
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <!-- EMAIL -->
+        <label for="email" class="col-form-label col-sm-2">Email</label>
+        <div class="col-sm-6">
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="usuario.email"
+            name="email"
+            required
+            #email="ngModel"
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="email.invalid && (email.dirty || email.touched)"
+          >
+            <div *ngIf="email.errors.required">
+              El email debe ser especificado
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="form-group row">
+         ROL
+        <label for="rol" class="col-form-label col-sm-2">Rol</label>
+        <div class="col-sm-6">
+          <select
+            name="selectRoles"
+            [(ngModel)]="idRolSeleccionado"
+            required
+            #rol="ngModel"
+            selected
+          >
+            <option *ngFor="let rol of roles" value="{{ rol.id }}">{{
+              rol.nombre | nombrerol
+            }}</option>
+          </select>
+        </div>
+        <div
+          class="alert alert-danger"
+          *ngIf="rol.invalid && (rol.dirty || rol.touched)"
+        >
+          <div *ngIf="rol.errors.required">
+            El rol debe ser especificado
+          </div>
+        </div>
+      </div> -->
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <button
+            class="btn btn-primary"
+            role="button"
+            (click)="create()"
+            *ngIf="!usuario.id; else elseBlock"
+            [disabled]="!usuarioForm.form.valid"
+          >
+            Crear
+          </button>
+          <button class="btn btn-danger" role="button" (click)="backClick()">
+            Cancelar
+          </button>
+          <ng-template #elseBlock>
+            <button
+              class="btn btn-primary"
+              role="button"
+              (click)="update()"
+              [disabled]="!usuarioForm.form.valid"
+            >
+              Editar
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

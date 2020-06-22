@@ -1,0 +1,126 @@
+<div class="card border-primary mb-3">
+  <div class="card-header">Usuarios</div>
+  <div class="card-body text-primary">
+    <h5 class="card-title">Listado de usuarios</h5>
+    <div class="my-2 text-left">
+      <button
+        *ngIf="authService.hasRole('ROLE_ADMIN')"
+        class="btn btn-rounded btn-primary"
+        type="button"
+        [routerLink]="['/usuarios/form']"
+      >
+        Nuevo Usuario
+      </button>
+    </div>
+    <div class="my-6">
+      <form>
+        <div class="form-group">
+          <label>Nombre de usuario</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            #username
+          />
+          <button
+            class="btn btn-info"
+            type="button"
+            name="botonFiltrarUsername"
+            (click)="filtrarBusqueda(username.value)"
+          >
+            Buscar
+          </button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="usuarios?.length == 0" class="alert alert-info">
+      No existe ningun usuario registrado
+    </div>
+    <table
+      class="table table-bordered table-striped"
+      *ngIf="usuarios?.length > 0"
+    >
+      <thead>
+        <tr>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">ID</th>
+          <th style="cursor: pointer;">
+            Username
+          </th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Roles</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Editar</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')">{{ usuario.id }}</td>
+          <td>{{ usuario.username }}</td>
+          <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>
+            <p *ngFor="let rol of usuario.roles">
+              {{ rol.nombre | nombrerol }}
+            </p>
+          </td>
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+            <button
+              type="button"
+              name="editar"
+              [routerLink]="['/usuarios/form', usuario.id]"
+              class="btn btn-primary btn-sm"
+            >
+              Editar
+            </button>
+          </td>
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+            <button
+              type="button"
+              name="eliminar"
+              (click)="delete(usuario)"
+              class="btn btn-danger btn-sm"
+              [disabled]="usuario.username == authService.usuario.username"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Navegacion">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" *ngIf="pagActual != 1">
+          <a
+            class="page-link"
+            style="cursor: pointer;"
+            (click)="setPage(pagActual - 2)"
+            >Anterior</a
+          >
+        </li>
+        <li
+          *ngFor="let num of numerosPaginas"
+          [ngClass]="{
+            'page-item active': pagActual === num,
+            'page-item': pagActual === num
+          }"
+        >
+          <a
+            class="page-link"
+            style="cursor: pointer;"
+            (click)="setPage(num - 1)"
+            >{{ num }}</a
+          >
+        </li>
+        <li class="page-item" *ngIf="pagActual != totalPaginas">
+          <a
+            class="page-link"
+            style="cursor: pointer;"
+            (click)="setPage(pagActual)"
+            >Siguiente</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

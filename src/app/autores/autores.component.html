@@ -1,0 +1,155 @@
+<div class="card border-primary mb-3">
+  <div class="card-header">Autores</div>
+  <div class="card-body text-primary">
+    <h5 class="card-title">Listado de autores</h5>
+    <div class="my-2 text-left">
+      <button
+        *ngIf="
+          authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')
+        "
+        class="btn btn-rounded btn-primary"
+        type="button"
+        [routerLink]="['/autores/form']"
+      >
+        Crear Autor
+      </button>
+    </div>
+    <div class="my-6">
+      <form>
+        <div class="form-group">
+          <label>Nombre del autor</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nombre"
+            #nombre
+          />
+          <button
+            class="btn btn-info"
+            type="button"
+            name="botonFiltrarNombre"
+            (click)="filtrarBusqueda(nombre.value)"
+          >
+            Buscar
+          </button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="autores?.length == 0" class="alert alert-info">
+      No existe ningun autor registrado
+    </div>
+    <table
+      class="table table-bordered table-striped"
+      *ngIf="autores?.length > 0"
+    >
+      <thead>
+        <tr>
+          <th
+            *ngIf="
+              authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')
+            "
+          >
+            Código
+          </th>
+          <th style="cursor: pointer;" (click)="setOrder('nombre')">
+            Nombre
+          </th>
+          <th>
+            Fecha Nacimiento
+          </th>
+          <th>Nacionalidad</th>
+          <th
+            *ngIf="
+              authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')
+            "
+          >
+            Editar
+          </th>
+          <th
+            *ngIf="
+              authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')
+            "
+          >
+            Eliminar
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let autor of autores">
+          <td
+            *ngIf="
+              authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')
+            "
+          >
+            {{ autor.id }}
+          </td>
+          <td>{{ autor.nombre }}</td>
+          <td>{{ autor.fechaNacimiento | date: "dd/MM/yyyy" }}</td>
+          <td>{{ autor.nacionalidad }}</td>
+          <td
+            *ngIf="
+              authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')
+            "
+          >
+            <button
+              type="button"
+              name="editar"
+              [routerLink]="['/autores/form', autor.id]"
+              class="btn btn-primary btn-sm"
+            >
+              Editar
+            </button>
+          </td>
+          <td
+            *ngIf="
+              authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')
+            "
+          >
+            <button
+              type="button"
+              name="eliminar"
+              (click)="delete(autor)"
+              class="btn btn-danger btn-sm"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Navegacion">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" *ngIf="pagActual != 1">
+          <a
+            class="page-link"
+            style="cursor: pointer;"
+            (click)="setPage(pagActual - 2)"
+            >Anterior</a
+          >
+        </li>
+        <li
+          *ngFor="let num of numerosPaginas"
+          [ngClass]="{
+            'page-item active': pagActual === num,
+            'page-item': pagActual === num
+          }"
+        >
+          <a
+            class="page-link"
+            style="cursor: pointer;"
+            (click)="setPage(num - 1)"
+            >{{ num }}</a
+          >
+        </li>
+        <li class="page-item" *ngIf="pagActual != totalPaginas">
+          <a
+            class="page-link"
+            style="cursor: pointer;"
+            (click)="setPage(pagActual)"
+            >Siguiente</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
